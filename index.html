@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>CSFD</title>
+	
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+</head>
+<body>
+	<h1 align="center">Movie Info</h1>
+	<div id="wraper">
+		<div id="styledwraper">
+<input id="movie" type="text"  minlength="1">
+<button id="btn">search</button><br>
+<div id="err" style="color:red;"></div>
+<div>Title: <span id="title"></span></div>
+<div>Year: <span id="year"></span></div>
+<div>Release: <span id="date"></span></div>
+<div>Genre: <span id="genre"></span></div>
+<div>Director: <span id="director"></span></div>
+<div>Actors: <span id="actor"></span></div>
+<div id="poster"></div>
+		</div>
+	</div>
+
+
+<script type="text/javascript">
+	$("#btn").click(function(){
+		var movie = $("#movie").val();
+		if (movie.length>0) {
+			var urllink='http://www.omdbapi.com/?t=' + movie + '&apikey=c62a056d';
+			$.ajax(
+			{
+				url: urllink,
+				data: {format: 'json'},
+				error: function()
+				{
+					//console.log("some fucking error!");
+				},
+				dataType: 'json',
+				success: function(data)
+				{
+					var cleaner = ["#title", "#year", "#date","#genre","#director","#poster","#actor","#err"];
+					for(var i=0;i<8;i++){
+						$(cleaner[i]).html("");
+					}
+
+					var title = data.Title;
+					var year = data.Year;
+					var date = data.Released;
+					var genre = data.Genre;
+					var director = data.Director;
+					var poster = data.Poster;
+					var actor = data.Actors;
+
+                    $("#title").append(title);
+                    $("#year").append(year);
+                    $("#date").append(date);
+                    $("#genre").append(genre);
+                    $("#director").append(director);
+                    $("#actor").append(actor);
+                    var img = $('<img id="poster">');
+                    img.attr('src', poster);
+                    img.appendTo('#poster');
+
+				},
+				type: 'GET'
+			});
+		}
+			else{
+			var cleaner = ["#title", "#year", "#date","#genre","#director","#actor","#poster"];
+				for(var i=0;i<7;i++){
+					$(cleaner[i]).html("");
+						}
+							$("#err").html("Enter some character to search !");
+		}
+	});
+</script>
+
+<style type="text/css">
+
+ body{
+ 	background-color: #9ea2a8;
+ }
+
+input[type=text] {
+    border: none;
+    border-bottom: 2px solid #d14a36;
+    background-color: rgba(255, 255, 255, 0.01);
+    outline: none;
+}
+
+#wraper{
+	background-color: rgba(255, 255, 255, 0.5);
+width: 800px;
+height: 600px;
+margin-left: 25%;
+
+}
+
+#styledwraper{
+	margin-left: 25%;
+
+}
+
+#btn{
+	background-color: #d14a36;
+	border-radius: 5px;
+	border: none;
+    
+    padding: 8px 13px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+}
+</style>
+</body>
+
+</html>
